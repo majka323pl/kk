@@ -37,39 +37,17 @@
 </div>
 
 <script>
-    // Funkcja do pobierania skryptu
-    function fetchScript() {
-        // Zastąp to właściwym linkiem do twojego skryptu Lua
-        const scriptUrl = 'script.lua'; 
-
-        fetch(scriptUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(scriptText => {
-                // Wyświetl zawartość skryptu w sposób, który Roblox może odczytać
-                // W przypadku loadstring, po prostu zwracamy czysty tekst
-                document.body.innerHTML = `<pre>${scriptText}</pre>`;
-                document.body.style.backgroundColor = 'transparent';
-                document.body.style.color = 'black';
-                document.getElementById('error-container').style.display = 'none';
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-                document.getElementById('error-container').style.display = 'block';
-            });
-    }
-
     // Sprawdzanie User-Agent
     const userAgent = navigator.userAgent;
     const isRoblox = userAgent.includes("Roblox");
 
     if (isRoblox) {
-        // Jeśli jest to Roblox, pobierz skrypt
-        fetchScript();
+        // Jeśli jest to Roblox, wstawiamy bezpośrednio kod Lua, który ma być pobrany.
+        // `loadstring` pobierze i wykona tylko tę zawartość.
+        document.body.innerHTML = `print("roblox poprawnie pobiera z strony")`;
+
+        // Ukrywamy kontener z błędem, aby nie był widoczny w kodzie
+        document.getElementById('error-container').style.display = 'none';
     } else {
         // W przeciwnym razie wyświetl błąd
         document.getElementById('error-container').style.display = 'block';

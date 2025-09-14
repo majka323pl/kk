@@ -3,38 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tekst jak w Pastebin RAW</title>
+    <title>Błąd dostępu</title>
     <style>
         body {
-            background-color: #2e3436;
-            color: #d3d7cf;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
+            text-align: center;
+        }
+        .container {
             padding: 20px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.4;
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
         }
-
-        /* Dodatkowy styl dla lepszego wrażenia */
-        pre {
-            margin: 0;
+        h1 {
+            color: #ff4d4d;
         }
-
     </style>
 </head>
 <body>
 
-<pre>
--- universal scripts loader
-loadstring(game:HttpGet("https://raw.githubusercontent.com/majka323pl/universal-scripts/refs/heads/main/universal-scripts"))()
-#include &lt;iostream&gt;
+<div class="container" id="error-container">
+    <h1>Błąd</h1>
+    <p>Dostęp do tej strony jest zabroniony. Ta strona może być wywołana tylko z poziomu gry Roblox.</p>
+    <p>Jeśli jesteś deweloperem, upewnij się, że używasz odpowiedniego skryptu `loadstring` w środowisku Roblox.</p>
+</div>
 
-int main() {
-    std::cout &lt;&lt; "Witaj, świecie!" &lt;&lt; std::endl;
-    return 0;
-}
-</pre>
+<script>
+    // Funkcja do pobierania skryptu
+    function fetchScript() {
+        // Zastąp to właściwym linkiem do twojego skryptu Lua
+        const scriptUrl = 'script.lua'; 
+
+        fetch(scriptUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(scriptText => {
+                // Wyświetl zawartość skryptu w sposób, który Roblox może odczytać
+                // W przypadku loadstring, po prostu zwracamy czysty tekst
+                document.body.innerHTML = `<pre>${scriptText}</pre>`;
+                document.body.style.backgroundColor = 'transparent';
+                document.body.style.color = 'black';
+                document.getElementById('error-container').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                document.getElementById('error-container').style.display = 'block';
+            });
+    }
+
+    // Sprawdzanie User-Agent
+    const userAgent = navigator.userAgent;
+    const isRoblox = userAgent.includes("Roblox");
+
+    if (isRoblox) {
+        // Jeśli jest to Roblox, pobierz skrypt
+        fetchScript();
+    } else {
+        // W przeciwnym razie wyświetl błąd
+        document.getElementById('error-container').style.display = 'block';
+    }
+</script>
 
 </body>
 </html>
